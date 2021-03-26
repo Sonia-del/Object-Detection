@@ -1,11 +1,6 @@
 img = "";
 status = "";
-
-result1 = "";
-result2 = "";
-
-accuracy1 = 0;
-accuracy2 = 0;
+objects = [];
 
 function preload()
 {
@@ -34,28 +29,26 @@ function gotResult(error, results)
         console.log(error);
     }
     console.log(results);
-    result1 = results[0].label;
-    result2 = results[1].label;
-
-    accuracy1 = results[0].confidence.toFixed(2);
-    accuracy2 = results[1].confidence.toFixed(2);
+    objects = results;
 }
 
 
 function draw()
 {
     image(img, 0, 0, 640, 420);
-    fill("#FF0000");
-    text(result2, 45, 75);
-    text("accuracy : " + accuracy2, 80, 75);
-    noFill();
-    stroke("#FF0000");
-    rect(30, 60, 450, 350);
 
-    fill("#FF0000")
-    text(result1, 320, 120);
-    text("accuracy : " + accuracy1, 355, 120);
-    noFill();
-    stroke("#FF0000")
-    rect(300, 90, 270, 320);
+    if(status != "")
+    {
+        for (i = 0; i < objects.length; i++)
+        {
+            document.getElementById("status").innerHTML = "Status : Object Detected";
+
+            fill("#FF0000")
+            percent = floor(objects[i].confidence = 100);
+            text(objects[i].label + " " + percent + "%", objects[i].x, objects[i].y);
+            noFill();
+            stroke("#FF0000");
+            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        }
+    }
 }
